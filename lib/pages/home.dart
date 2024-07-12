@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_flutter_app/pages/employee.dart';
 import 'package:my_flutter_app/service/database.dart';
@@ -20,6 +21,9 @@ class _HomeState extends State<Home> {
   getontheload() async {
     EmployeeStream = await DatabaseMethods().getEmployeeDetails();
     setState(() {});
+  }
+  signout() async {
+    await FirebaseAuth.instance.signOut();
   }
 
   @override
@@ -53,7 +57,6 @@ class _HomeState extends State<Home> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
-                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   "Name :" + ds["Name"],
@@ -72,41 +75,15 @@ class _HomeState extends State<Home> {
                                     EditEmployeeDetail(ds.id);
                                   },
                                   child: Icon(Icons.edit, color: Colors.green), 
-                                  ),
-                                    SizedBox(width: 5.0,),
-                                     GestureDetector(
+                                ),
+                                SizedBox(width: 5.0),
+                                GestureDetector(
                                   onTap: () async{
-                                  await DatabaseMethods().deleteEmployeeDetails(ds["Id"]);
-                                  
+                                    await DatabaseMethods().deleteEmployeeDetails(ds["Id"]);
                                   },
-                                  child:  Icon(Icons.delete, color: Colors.red,)                                  ),
-                                   
-                               
+                                  child: Icon(Icons.delete, color: Colors.red),
+                                ),
                               ],
-
-
-
-//  GestureDetector(
-//                                       onTap: ()async{
-//                                       await DatabaseMethods().deleteEmployeeDetails(ds["Id"]);                      
-//                                       },
-//                                      
-
-//                                     ),
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                             ),
                             Text(
                               "Age :" + ds["Age"],
@@ -165,6 +142,13 @@ class _HomeState extends State<Home> {
             )
           ],
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout,color: Colors.blue,),
+            onPressed: signout,
+          
+          ),
+        ],
       ),
       body: Container(
         margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 30.0),

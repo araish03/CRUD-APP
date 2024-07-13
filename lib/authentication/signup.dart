@@ -1,39 +1,36 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_flutter_app/authentication/forgot.dart';
-import 'package:my_flutter_app/authentication/signup.dart';
+import 'package:my_flutter_app/authentication/wrapper.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class Signup extends StatefulWidget {
+  const Signup({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<Signup> createState() => _SignupState();
 }
 
-class _LoginState extends State<Login> {
-  TextEditingController email = TextEditingController();
+class _SignupState extends State<Signup> {
+
+ TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
 
-  signIn() async {
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+  signup() async {
+    
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email.text, password: password.text);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login Successful')),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login Failed: $e')),
-      );
-    }
+      Get.offAll(Wrapper());
   }
-
+  
+  
+  
+  
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Login",
+         appBar: AppBar(
+        title: Text("Sign Up",
         style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: const Color.fromARGB(255, 255, 255, 255), // Optional: Change text color
@@ -47,7 +44,7 @@ class _LoginState extends State<Login> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Welcome Back!',
+              'Welcome!',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -89,35 +86,8 @@ class _LoginState extends State<Login> {
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: signIn,
-              child: Text("Login"),
-              style: ElevatedButton.styleFrom(
-               
-                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
-            SizedBox(height: 30,),
-                ElevatedButton(
-              onPressed: (()=>Get.to(Signup())),
-              child: Text("Register Now"),
-              style: ElevatedButton.styleFrom(
-               
-                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
-             SizedBox(height: 30,),
-
-                ElevatedButton(
-              onPressed: ()=>Get.to(Forgot()),
-              child: Text("Forgot Password"),
+              onPressed: signup,
+              child: Text("Sign Up"),
               style: ElevatedButton.styleFrom(
                
                 padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
